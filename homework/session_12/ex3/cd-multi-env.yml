@@ -1,0 +1,97 @@
+name: CD - Multi Environment (Staging & Production)
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  # ──────────────────────────────────────────────
+  # Job 1: Deploy to Staging (kích hoạt khi push vào develop)
+  # ──────────────────────────────────────────────
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+
+    environment:
+      name: staging
+      url: https://api.staging.example.com
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Show deploy info
+        run: |
+          echo "====================================="
+          echo "  Deploying to STAGING environment"
+          echo "  Branch : ${{ github.ref_name }}"
+          echo "  Commit : ${{ github.sha }}"
+          echo "  Actor  : ${{ github.actor }}"
+          echo "====================================="
+
+      - name: Simulate build
+        run: |
+          echo "Building application..."
+          sleep 2
+          echo "Build completed successfully."
+
+      - name: Simulate deploy to Staging
+        run: |
+          echo "Deploying to Staging server..."
+          sleep 2
+          echo "✅ Deployment to Staging completed!"
+          echo "URL: https://api.staging.example.com"
+
+  # ──────────────────────────────────────────────
+  # Job 2: Deploy to Production (kích hoạt khi push vào main)
+  #         Yêu cầu phê duyệt thủ công (Required reviewers)
+  # ──────────────────────────────────────────────
+  deploy-prod:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    environment:
+      name: production
+      url: https://api.prod.example.com
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Show deploy info
+        run: |
+          echo "====================================="
+          echo "  Deploying to PRODUCTION environment"
+          echo "  Branch : ${{ github.ref_name }}"
+          echo "  Commit : ${{ github.sha }}"
+          echo "  Actor  : ${{ github.actor }}"
+          echo "====================================="
+
+      - name: Simulate build
+        run: |
+          echo "Building application for production..."
+          sleep 2
+          echo "Build completed successfully."
+
+      - name: Run smoke tests
+        run: |
+          echo "Running smoke tests before production deploy..."
+          sleep 1
+          echo "All smoke tests passed."
+
+      - name: Simulate deploy to Production
+        run: |
+          echo "Deploying to Production server..."
+          sleep 2
+          echo "✅ Deployment to Production completed!"
+          echo "URL: https://api.prod.example.com"
+
+      - name: Post-deploy health check
+        run: |
+          echo "Running post-deployment health check..."
+          sleep 1
+          echo "✅ Health check passed. Production is live!"
