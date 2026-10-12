@@ -110,10 +110,7 @@ git push origin main
 
 ## Sản phẩm nộp bài
 
-- [x] File `cd-multi-env.yml` — kịch bản workflow
-- [ ] Ảnh chụp màn hình cửa sổ **"Waiting for review"** (chụp sau khi push lên GitHub)
-- [ ] Ảnh chụp màn hình sau khi **Approve and deploy** thành công (job tích xanh)
-
+![alt text](image.png)
 ---
 
 ## Tham khảo
